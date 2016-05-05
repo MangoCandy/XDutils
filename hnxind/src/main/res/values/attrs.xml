@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CirclePercent">
+        <attr name="MaxProgress" format="integer"/>
+        <attr name="Progress" format="integer"/>
+        <attr name="BackColor" format="color"/>
+        <attr name="Color" format="color"/>
+    </declare-styleable>
+</resources>
