@@ -36,5 +36,7 @@ dependencies {
     apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
     // sql-cipher database encyrption (optional)
     compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
+    //okhttp
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
 
 }
