@@ -2,6 +2,9 @@ package com.hnxind.object.Connect;
 
 
 import android.os.Looper;
+import android.util.Log;
+
+import com.hnxind.object.Toast.MToast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -60,23 +65,39 @@ public class MHttpUtils {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    response = client.newCall(request).execute();
-                    Looper.prepare();
-                    if(response.isSuccessful()){
-                        onSuccessListener.onSuccess(response.body().string());
-                    }else{
-                        onFailueListener.onFailue("错误编码:"+response.code());
+                Call call = client.newCall(request);
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        onFail(e);
                     }
-                    Looper.loop();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+                    @Override
+                    public void onResponse(Call call, Response r) throws IOException {
+                        onSuccess(r);
+                    }
+                });
             }
         });
         thread.start();
     }
 
+    private void onFail(IOException e){
+        Looper.prepare();
+        onFailueListener.onFailue(e.getMessage());
+        Looper.loop();
+    }
+
+    private void onSuccess(Response r ) throws IOException {
+        Looper.prepare();
+        this.response = r;
+        if(response.isSuccessful()){
+            onSuccessListener.onSuccess(response.body().string());
+        }else{
+            onFailueListener.onFailue("错误编码:"+response.code());
+        }
+        Looper.loop();
+    }
 
     public interface OnSuccessListener{
         public void onSuccess(String content);
