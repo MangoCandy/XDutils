@@ -94,7 +94,7 @@ public class MBanner extends RelativeLayout {
     }
 
     public void switch2point(int position){
-        int x = (position%viewList.size());
+//        int x = (position%viewList.size());
         for(int i = 0;i<viewList.size();i++){
             ImageView imageView = (ImageView)points.get(i);
             imageView.setSelected(false);

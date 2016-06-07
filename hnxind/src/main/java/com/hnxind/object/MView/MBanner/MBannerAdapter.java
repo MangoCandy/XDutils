@@ -18,7 +18,11 @@ public class MBannerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return Integer.MAX_VALUE;
+        if(views.size()>2){
+            return Integer.MAX_VALUE;
+        }else{
+            return views.size();
+        }
     }
 
     @Override

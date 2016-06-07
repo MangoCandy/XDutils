@@ -2,6 +2,7 @@ package com.hnxind.object.Connect;
 
 
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import com.hnxind.object.Toast.MToast;
@@ -16,8 +17,12 @@ import java.util.Set;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -25,6 +30,7 @@ import okhttp3.Response;
  */
 public class MHttpUtils {
     FormBody formBody;
+    RequestBody requestBody;
     OkHttpClient client;
     Response response;
     String URL;
@@ -40,26 +46,47 @@ public class MHttpUtils {
 
     }
 
+//    public void addPost(Map<String,String> params){
+//        FormBody.Builder builder = new FormBody.Builder();
+//        Set keyset = params.keySet();
+//        for (Iterator i = keyset.iterator(); i.hasNext();)
+//        {
+//            String key = (String) i.next();
+//            String value = params.get(key);
+//            builder.add(key,value);
+//        }
+//        requestBody = builder.build();
+//    }
+//
     public void addPost(Map<String,String> params){
-        FormBody.Builder builder = new FormBody.Builder();
+        MultipartBody.Builder  builder = new MultipartBody.Builder();
+                builder.setType(MultipartBody.FORM);
         Set keyset = params.keySet();
-        String[] p = new String[keyset.size()];
-        List<String> values = new ArrayList<>();
         for (Iterator i = keyset.iterator(); i.hasNext();)
         {
             String key = (String) i.next();
             String value = params.get(key);
-            builder.add(key,value);
+            builder.addPart(Headers.of(
+
+                "Content-Disposition",
+
+                "form-data; name=\""+key+"\""),
+
+                RequestBody.create(null, value))
+                .build();
         }
-        formBody = builder.build();
+        requestBody = builder.build();
     }
 
     public void start(){
         Request.Builder builder = new Request.Builder();
         builder.url(URL);
-        if(formBody!=null){
-            builder.post(formBody);
+        if(requestBody!=null){
+            builder.post(requestBody);
         }
+//        if(requestBody!=null){
+//            builder.post(requestBody);
+//        }
         final Request request = builder
                 .build();
         Thread thread = new Thread(new Runnable() {
