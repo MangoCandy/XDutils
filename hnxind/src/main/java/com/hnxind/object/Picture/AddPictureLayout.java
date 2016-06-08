@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 
-import com.hnxind.object.R;
 import com.hnxind.object.Toast.MToast;
 
 import java.util.ArrayList;
@@ -47,6 +46,11 @@ public class AddPictureLayout extends GridView {
                 }else{
                     MToast.show(context,"请配置监听器");
                 }
+            }
+
+            @Override
+            public void onNormalClick(int position) {
+                addPictureListener.onNormalClick(position);
             }
         });
     }

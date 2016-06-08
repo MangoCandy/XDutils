@@ -2,6 +2,7 @@ package com.hnxind.object.Picture;
 
 import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,20 +13,24 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.hnxind.object.MUtils;
+import com.hnxind.object.MView.ShowImage.Act_ShowImage;
 import com.hnxind.object.R;
 import com.hnxind.object.Toast.MToast;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import me.iwf.photopicker.PhotoPagerActivity;
 
 /**
  * Created by Administrator on 2016/5/5.
  */
 public class Adapter_AddpitureLayout extends BaseAdapter {
-    List<String> paths;
+    ArrayList<String> paths;
     boolean DELETE_MODE = false;
     Context context;
     public Adapter_AddpitureLayout(List<String> paths){
-        this.paths = paths;
+        this.paths = (ArrayList<String>) paths;
     }
 
 
@@ -72,6 +77,12 @@ public class Adapter_AddpitureLayout extends BaseAdapter {
             });
         }else {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_addpicture,null);
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addPictureListener.onNormalClick(position);
+                }
+            });
             ImageView image = (ImageView) convertView.findViewById(R.id.image);
             Glide.with(parent.getContext()).load(paths.get(position)).into(image);
             ImageView close = (ImageView) convertView.findViewById(R.id.delete);
@@ -119,5 +130,6 @@ public class Adapter_AddpitureLayout extends BaseAdapter {
 
     public static interface AddPictureListener{
         public void AddPicture();
+        public void onNormalClick(int position);
     }
 }

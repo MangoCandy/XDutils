@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.hnxind.object.Toast.MToast;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -74,6 +75,36 @@ public class MHttpUtils {
 
                 RequestBody.create(null, value))
                 .build();
+        }
+        requestBody = builder.build();
+    }
+    public void addPost(Map<String,String> params, List<String> filespath){
+        MultipartBody.Builder  builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+        Set keyset = params.keySet();
+        for (Iterator i = keyset.iterator(); i.hasNext();)
+        {
+            String key = (String) i.next();
+            String value = params.get(key);
+            builder.addPart(Headers.of(
+
+                    "Content-Disposition",
+
+                    "form-data; name=\""+key+"\""),
+
+                    RequestBody.create(null, value))
+                    .build();
+        }
+        builder.addPart(Headers.of(
+
+                "Content-Disposition",
+
+                "form-data; name=\"count\""),
+
+                RequestBody.create(null, filespath.size()+""))
+                .build();
+        for(int i = 1;i<=filespath.size();i++){
+            builder.addFormDataPart("file"+i,"",RequestBody.create(MediaType.parse("image/jpg"),new File(filespath.get(i-1))));
         }
         requestBody = builder.build();
     }
