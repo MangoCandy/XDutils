@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.activation.MimeType;
+import javax.activation.MimetypesFileTypeMap;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -78,7 +81,7 @@ public class MHttpUtils {
         }
         requestBody = builder.build();
     }
-    public void addPost(Map<String,String> params, List<String> filespath){
+    public void addPost(Map<String,String> params, List<String> filespath,String filekey){
         MultipartBody.Builder  builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
         Set keyset = params.keySet();
@@ -104,7 +107,8 @@ public class MHttpUtils {
                 RequestBody.create(null, filespath.size()+""))
                 .build();
         for(int i = 1;i<=filespath.size();i++){
-            builder.addFormDataPart("file"+i,"",RequestBody.create(MediaType.parse("image/jpg"),new File(filespath.get(i-1))));
+            File file = new File(filespath.get(i-1));
+            builder.addFormDataPart(filekey+i,"",RequestBody.create(MediaType.parse(new MimetypesFileTypeMap().getContentType(file)),file));
         }
         requestBody = builder.build();
     }
