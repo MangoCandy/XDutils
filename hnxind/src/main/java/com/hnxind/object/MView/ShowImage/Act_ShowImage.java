@@ -10,11 +10,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.hnxind.object.R;
-import com.squareup.picasso.Picasso;
-import com.veinhorn.scrollgalleryview.MediaInfo;
-import com.veinhorn.scrollgalleryview.ScrollGalleryView;
-import com.veinhorn.scrollgalleryview.loader.DefaultImageLoader;
-import com.veinhorn.scrollgalleryview.loader.MediaLoader;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +18,6 @@ import java.util.List;
 
 public class Act_ShowImage extends AppCompatActivity {
     Context context = this;
-    ScrollGalleryView galleryView;
     Bitmap bitmap;
     String url;
     List<String> paths;
@@ -38,18 +33,19 @@ public class Act_ShowImage extends AppCompatActivity {
     private void initBitmap() {
         url = getIntent().getExtras().getString("bitmap");
         if(url!=null){
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        bitmap = Picasso.with(context).load(url).get();
-                        handler.sendEmptyMessage(0);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            thread.start();
+            getBitMap(url);
+//            Thread thread = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        bitmap = Picasso.with(context).load(url).get();
+//                        handler.sendEmptyMessage(0);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
+//            thread.start();
         }
         paths = getIntent().getExtras().getStringArrayList(PATHS);
         if(paths!=null){
@@ -67,7 +63,7 @@ public class Act_ShowImage extends AppCompatActivity {
                         bitmap = Picasso.with(context).load(path).get();
                         bitmaps.add(bitmap);
                     }
-                    handler.sendEmptyMessage(0);
+                    handler.sendEmptyMessage(1);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -7,11 +7,23 @@ import android.widget.Toast;
  * Created by Administrator on 2016/5/5.
  */
 public class MToast {
+    static Toast toast;
     public static void show(Context context,String content){
-        Toast.makeText(context,content,Toast.LENGTH_SHORT).show();
+        if(toast!=null){toast.cancel();}
+        toast = Toast.makeText(context,content,Toast.LENGTH_SHORT);
+        toast.show();
+//        Toast.makeText(context,content,Toast.LENGTH_SHORT).show();
+    }
+
+    public static void show(Context context,int s){
+        if(toast!=null){toast.cancel();}
+        toast = Toast.makeText(context,context.getResources().getString(s),Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     public static void show(Context context,String content,int time){
-        Toast.makeText(context,content,time).show();
+        if(toast!=null){toast.cancel();}
+        toast = Toast.makeText(context,content,time);
+        toast.show();
     }
 }

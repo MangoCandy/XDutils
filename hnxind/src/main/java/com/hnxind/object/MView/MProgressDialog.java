@@ -18,6 +18,12 @@ public class MProgressDialog {
         progressDialog.show();
     }
 
+    public static void show(Context context,int msg){
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(context.getResources().getString(msg));
+        progressDialog.show();
+    }
+
     public static void show(Context context,String msg,boolean cancelable){
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(msg);

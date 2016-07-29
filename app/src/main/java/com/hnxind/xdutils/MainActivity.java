@@ -7,7 +7,11 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.hnxind.object.MView.MBanner.MBanner;
+import com.hnxind.object.MView.ShowImage.Act_ZoomImage;
 import com.hnxind.object.MView.ShowImage.GlideLoader;
 import com.hnxind.object.Picture.Adapter_PickPicture;
 import com.hnxind.object.Picture.PickPictureNine;
@@ -16,57 +20,45 @@ import com.yancy.imageselector.ImageConfig;
 import com.yancy.imageselector.ImageSelector;
 import com.yancy.imageselector.ImageSelectorActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    PickPictureNine pickPictureNine;
+    MBanner banner;
     Context context = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent intent = new Intent(this,Act_ZoomImage.class);
+        intent.putExtra(Act_ZoomImage.IMAGE_PATHS,new ArrayList<String>());
+        startActivity(intent);
         init();
     }
     public void init(){
-        pickPictureNine = (PickPictureNine)findViewById(R.id.pick);
-        pickPictureNine.setOnItemOnclickListener(new Adapter_PickPicture.OnItemOnclickListener() {
+        banner = (MBanner)findViewById(R.id.banner);
+        List<String> views = new ArrayList<>();
+        for(int i = 0;i<2;i++){
+            views.add("http://img5.imgtn.bdimg.com/it/u=1349121993,2318126984&fm=15&gp=0.jpg");
+        }
+        banner.addViews(views, new MBanner.OnItemClickListenner() {
             @Override
-            public void onItemClick(int position) {
-
-            }
-
-            @Override
-            public void onPick() {
-                ImageConfig imageConfig
-                        = new ImageConfig.Builder(new GlideLoader())
-                        .steepToolBarColor(getResources().getColor(R.color.colorPrimaryDark))
-                        .titleBgColor(getResources().getColor(R.color.colorPrimary))
-                        .titleSubmitTextColor(getResources().getColor(R.color.white))
-                        .titleTextColor(getResources().getColor(R.color.white))
-                        // 开启多选   （默认为多选）
-                        .mutiSelect()
-                        // 多选时的最大数量   （默认 9 张）
-                        .mutiSelectMaxSize(9)
-                        // 开启拍照功能 （默认关闭）
-                        .showCamera()
-                        // 已选择的图片路径
-//                        .pathList(path)
-                        // 拍照后存放的图片路径（默认 /temp/picture） （会自动创建）
-                        .filePath("/zhsq/Pictures")
-                        .build();
-                ImageSelector.open((Activity)context,imageConfig);
+            public void onClick(int postion) {
+                MToast.show(context,postion+"个");
             }
         });
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ImageSelector.IMAGE_REQUEST_CODE){
-            if(resultCode == RESULT_OK && data != null){
-                List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
-                pickPictureNine.setPaths(pathList);
-//                addPicture.setSrc(paths);
-            }
-        }
+
+    }
+
+    int i = 0;
+    @Override
+    public void onBackPressed() {
+        MToast.show(this,i+++"");
+//        super.onBackPressed();
     }
 }

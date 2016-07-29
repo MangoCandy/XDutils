@@ -1,6 +1,7 @@
 package com.hnxind.object.MView.MBanner;
 
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,10 +19,10 @@ public class MBannerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        if(views.size()>2){
+        if(views.size()>1){
             return Integer.MAX_VALUE;
-        }else{
-            return views.size();
+        }else {
+            return 1;
         }
     }
 
@@ -37,7 +38,10 @@ public class MBannerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View view = views.get(position % views.size());
+        Log.i("position",position+"");
+        View view = null;
+        view = views.get(position % views.size());
+        Log.i("asd",position+"%"+views.size()+"="+position%views.size());
         if(container.equals(view.getParent())){
             container.removeView(view);
         }
